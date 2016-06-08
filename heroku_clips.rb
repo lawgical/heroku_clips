@@ -19,17 +19,18 @@ class HerokuClips
       request["X-Csrf-Token"] = csfr_token
       request.body = JSON.dump({"heroku_resource_id" => target})
 
-
       response = Net::HTTP.start(uri.hostname, uri.port, use_ssl: uri.scheme == "https") do |http|
         http.request(request)
       end
 
-       puts "Response after moving clip: #{response.code}"
-
       if response.code == "200"
         puts "DataClip #{clip['name']} moved to resource #{target}"
       else
-        puts "result #{response.code}"
+        puts "Error moving #{clip['name']}, response code: #{response.code}-#{response.message}"
+        puts "Please confirm that you have fresh cookies and csfr token"
+        puts "Stopping..."
+        #end the loop if something is bad.
+        break
       end
     end
   end

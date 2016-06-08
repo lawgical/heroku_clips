@@ -11,7 +11,7 @@ Go to the [Clips Index Page](https://dataclips.heroku.com/clips) and use the ins
   * Paste the content and then copy the cookies (after `'Cookie:`) and the `X-CSRF-Token` value.
 
 ### II Retrieve the Target
-The easy way is doing a move by hand in the page and with the inspect tool analyze the the response made:
+The easy way is doing a move by hand in the page and with the inspect tool analyze the response made:
   * Go to Network tab and find the `move` request
   * Right-click Copy as cURL
   * Paste the content and then copy the target (`heroku_resource_id`) that will be at the end. Will be like this: `{"heroku_resource_id":"resource123456@heroku.com"}`
