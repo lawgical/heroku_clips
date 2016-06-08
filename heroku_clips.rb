@@ -31,8 +31,6 @@ class HerokuClips
       else
         puts "result #{response.code}"
       end
-
-      break
     end
   end
 
