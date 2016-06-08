@@ -4,7 +4,7 @@ require 'json'
 
 class HerokuClips
 
-  def self.move(app_name, target, cookies)
+  def self.move(app_name, target, cookies, csfr_token)
     #grab the clips
     clips = data_clips(cookies)
 
@@ -14,15 +14,19 @@ class HerokuClips
     app_clips.each do |clip|
       slug = clip["slug"]
       uri = URI.parse("#{base_uri}/#{slug}/move")
-      request = Net::HTTP::Put.new(uri)
+      request = Net::HTTP::Post.new(uri)
       request["Cookie"] = cookies
-      request.set_form_data("heroku_resource_id" => target)
+      request["X-Csrf-Token"] = csfr_token
+      request.body = JSON.dump({"heroku_resource_id" => target})
+
 
       response = Net::HTTP.start(uri.hostname, uri.port, use_ssl: uri.scheme == "https") do |http|
         http.request(request)
       end
 
-      if response == Net::HTTPSuccess
+       puts "Response after moving clip: #{response.code}"
+
+      if response.code == "200"
         puts "DataClip #{clip['name']} moved to resource #{target}"
       else
         puts "result #{response.code}"
@@ -47,7 +51,9 @@ class HerokuClips
         http.request(request)
       end
 
-      if response.body.present?
+      puts "Response getting clips: #{response.code}"
+
+      if response.code == "200"
         JSON.parse response.body
       else
         []
