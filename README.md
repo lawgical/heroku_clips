@@ -22,10 +22,20 @@ The easy way is doing a move by hand in the page and with the inspect tool analy
 2. Call: `HerokuClips.move(name_of_app_in_heroku, target, cookies, csrf_token)`
 
 #### Example of output:
-If everything goes OK:
+If you receive a different code than 200 in the output `Response getting clips:`,  the process wont't do anything, please check your cookies. But if you get 200, this situations could happen:
+
+#### Moving OK
+```
+Response getting clips: 200
+DataClip Name-Of-Data-Clip moved to resource resource13790699@heroku.com
+```
+
+#### Moving FAIL
+If something goes bad with the move, the process will stop:
 
 ```
 Response getting clips: 200
-Response after moving clip: 200
-DataClip ATF: Affidavit Usage in MT moved to resource resource13790699@heroku.com
+Error moving Name-Of-Data-Clip, response code: 400-Bad Request
+Please confirm that you have fresh cookies and csfr token
+Stopping...
 ```
